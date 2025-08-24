@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import tempfile
 from openai import OpenAI
 from pydantic import BaseModel
-
+import requests
 
 app = FastAPI()
 
@@ -33,28 +33,29 @@ def generate_pdf(data: dict):
 
 
 
+API_KEY = "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"
+URL = "https://openrouter.ai/api/v1/chat/completions"
 
-
-# Request schema
 class MessageRequest(BaseModel):
     message: str
 
-# OpenAI-compatible client
-client = OpenAI(
-    api_key="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",
-    base_url="https://openrouter.ai/api/v1"
-)
-
 @app.post("/chat_bot_api")
 async def chat_bot_api(req: MessageRequest):
-    prompt = [
-        {"role": "system", "content": "You are a helpful assistant.answer the question concisely."},
-        {"role": "user", "content": req.message}
-    ]
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {API_KEY}"
+    }
 
-    response = client.chat.completions.create(
-        model="google/gemma-3-12b-it:free",
-        messages=prompt
-    )
+    data = {
+        "model": "google/gemma-3-12b-it:free",
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": req.message}
+        ]
+    }
 
-    return {"response": response.choices[0].message["content"].strip()}
+    response = requests.post(URL, headers=headers, json=data, timeout=30)
+    response.raise_for_status()
+
+    answer = response.json()["choices"][0]["message"]["content"].strip()
+    return {"response": answer}
