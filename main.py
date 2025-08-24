@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-import tempfile
+# import tempfile
 from pydantic import BaseModel
 import requests
 
@@ -23,7 +23,7 @@ def home():
 @app.post("/generate-pdf")
 def generate_pdf(data: dict):
     text = data.get("text", "Empty PDF")
-    pdf_path = tempfile.gettempdir() + "/output.pdf"
+    pdf_path = ""
 
     with open(pdf_path, "w") as f:
         f.write(text)
