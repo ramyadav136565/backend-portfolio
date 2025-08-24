@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import tempfile
-from openai import OpenAI
 from pydantic import BaseModel
 import requests
 
