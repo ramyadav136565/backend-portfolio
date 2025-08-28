@@ -4,6 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 # import tempfile
 from pydantic import BaseModel
 import requests
+import os
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv("OPENROUTER_API_KEY")# take environment variables from .env.
 
 app = FastAPI()
 
@@ -32,8 +38,14 @@ def generate_pdf(data: dict):
 
 
 
-API_KEY = "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"
+
+class MessageRequest(BaseModel):
+    message: str
+
+
 URL = "https://openrouter.ai/api/v1/chat/completions"
+API_KEY = os.environ.get("OPENROUTER_API_KEY") # load from env variable
+print("API_KEY:", API_KEY)  # Debugging line to check if the API key is loaded correctly
 
 class MessageRequest(BaseModel):
     message: str
