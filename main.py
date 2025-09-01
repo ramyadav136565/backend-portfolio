@@ -65,8 +65,34 @@ async def chat_bot_api(req: MessageRequest):
         ]
     }
 
-    response = requests.post(URL, headers=headers, json=data, timeout=30)
-    response.raise_for_status()
 
-    answer = response.json()["choices"][0]["message"]["content"].strip()
+    import requests
+    import json
+
+    response = requests.post(
+    url="https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json",
+        # "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+        # "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+    },
+    data=json.dumps({
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "messages": [
+        {
+            "role": "user",
+            "content": req.message
+        }
+        ],
+        
+    })
+    )
+
+    # Check if the response is successful
+    if response.status_code == 200:
+        answer = response.json()["choices"][0]["message"]["content"].strip()
+    else:
+        answer = "Error: Unable to retrieve response"
+
     return {"response": answer}
