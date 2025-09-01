@@ -71,7 +71,7 @@ engineering, and creating AI-
 driven applications.
 © 2018 Sogeti. All rights reserved.
 Professional Background
-Skilled Python developer with 1.5+ years of
+Skilled Python developer with 2+ years of
 experience, proficient in Python, FastAPI,
 Flask, Generative AI, and Docker.
 Experienced in developing scalable
@@ -146,7 +146,10 @@ async def chat_bot_api(req: MessageRequest):
     - If the user asks about your **background**, share a brief overview of your experience and skills.  
     - If the user asks about the **technologies you used**, provide a clear list of relevant tools and frameworks.  
     - If the user asks about your **education**, include details about your academic background and any relevant certifications.  
-    - If certain information is **not available**, politely inform the user and suggest they reach out via email: ryyadav1365@gmail.com.  
+    - If certain information is **not available**, politely inform the user and suggest they reach out via email: ryyadav1365@gmail.com. 
+    - do not reply such as "Based on the provided information" or "As mentioned earlier" or similar phrases.
+    - do not mention your name every time.
+    - if you greeted the user earlier, do not repeat the greeting.
     """
 
     response = requests.post(
