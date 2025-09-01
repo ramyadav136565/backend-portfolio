@@ -6,7 +6,8 @@ from pydantic import BaseModel
 import requests
 import os
 from dotenv import load_dotenv
-import os
+import json
+
 
 load_dotenv()
 api_key = os.getenv("OPENROUTER_API_KEY")# take environment variables from .env.
@@ -50,24 +51,103 @@ print("API_KEY:", API_KEY)  # Debugging line to check if the API key is loaded c
 class MessageRequest(BaseModel):
     message: str
 
+ram_data=f"""
+Rameshwar Yadav
+Analyst/Software Engineer
+Core Competencies
+▪ Proficient in Python
+programming with hands-on
+experience in FastAPI, Flask,
+Docker, and database
+management. Skilled in
+developing efficient and
+scalable applications using
+modern frameworks and
+tools.
+▪ Generative AI :Expert in
+Generative AI, specializing in
+model fine-tuning, prompt
+engineering, and creating AI-
+driven applications.
+© 2018 Sogeti. All rights reserved.
+Professional Background
+Skilled Python developer with 1.5+ years of
+experience, proficient in Python, FastAPI,
+Flask, Generative AI, and Docker.
+Experienced in developing scalable
+applications, automation scripts, and data-
+driven solutions. Adept at collaborating
+with cross-functional teams to optimize
+performance and deliver high-quality
+software solutions.
+Education
+▪ B.Tech in Computer Science Engineering
+- Institute of Engineering & Technology,
+DAVV, Indore.
+Certification and Training
+▪ Python Beginner and Practitioner
+▪ Azure Fundamentals (AZ-900)
+▪ Generative AI Bullseye Learning Challenge
+Professional Tools and Skills
+▪ Technical: Python, Generative AI, Prompt
+Engineering, FastAPI, Flask, LangChain, SQL,
+PostgreSQL, Azure Blob, Docker.
+▪ Functional: Project Management, Strategic
+Planning, Agile Methodology, and Excellent
+Communication
+▪ Gen AI Tools: GPT, Copilot
++91 8888888888
+ryyadav1365@gmail.com
+Experience
+▪ J&J GEN AI Smart Assist Project:
+Developed backend APIs using Python Flask and PostgreSQL, ensuring a robust
+and scalable architecture for the J&J GEN AI Smart Assist POC. Worked on Azure
+Blob Storage for efficient data handling and leveraged prompt engineering
+techniques to enhance Generative AI capabilities. This solution enables users to
+upload old briefing files, policy documents, and contextual text to generate
+briefing documents using Generative AI. By integrating Azure OpenAI Search
+and Retrieval-Augmented Generation (RAG), we ensured accurate and efficient
+content generation. The project was successfully delivered, earning positive
+feedback from the client.
+▪ Skoda GenAI POC:
+Developed a Generative AI POC with secure Azure Email OTP authentication,
+featuring "Ask to Files," "Ask to URL," and "Document Comparison." Built with
+Python and Flask, ensuring scalability, efficiency, and advanced data tracking for
+analytics.
+▪ Text to Image Search POC :
+Developed an application for retrieving images from PDFs using advanced
+algorithms, ranking, and metadata extraction. Built with Python, Flask, and
+Streamlit, integrating OpenAI models for enhanced accuracy and efficiency.
+▪ Face Similarity Checker POC :
+Created a facial similarity detection tool using machine learning models for
+precise comparison. Developed frontend and backend components with
+Python, Flask, and Streamlit for seamless performance.
+▪ Multimodal Search POC :
+Designed a system to retrieve images from PDFs based on text input using
+embeddings and similarity measures. Utilized CLIP for embedding generation
+and FAISS for efficient image ranking and retrieval.
+▪ Document Comparison POC :
+Developed an AI-driven document comparison tool to identify and highlight
+differences between text-based files. Built with Python, Flask, and OpenAI
+models, ensuring accuracy, scalability, and seamless user experience.
+"""
+
 @app.post("/chat_bot_api")
 async def chat_bot_api(req: MessageRequest):
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {API_KEY}"
-    }
 
-    data = {
-        "model": "google/gemma-3-12b-it:free",
-        "messages": [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": req.message}
-        ]
-    }
+    prompt = f"""
+    Your name is Ramy. You are a helpful assistant. You must answer the user's question: {req.message}  
+    using the provided information: {ram_data}  
 
-
-    import requests
-    import json
+    Crucial Rules:  
+    - Always respond in **English** by default (unless the user explicitly requests another language).  
+    - Maintain a **polite and professional tone** at all times.  
+    - If the user asks about a **specific project**, provide relevant details about that project.  
+    - If the user asks about your **background**, share a brief overview of your experience and skills.  
+    - If the user asks about the **technologies you used**, provide a clear list of relevant tools and frameworks.  
+    - If the user asks about your **education**, include details about your academic background and any relevant certifications.  
+    - If certain information is **not available**, politely inform the user and suggest they reach out via email: ryyadav1365@gmail.com.  
+    """
 
     response = requests.post(
     url="https://openrouter.ai/api/v1/chat/completions",
@@ -82,7 +162,7 @@ async def chat_bot_api(req: MessageRequest):
         "messages": [
         {
             "role": "user",
-            "content": req.message
+            "content": prompt
         }
         ],
         
